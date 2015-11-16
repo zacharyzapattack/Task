@@ -8,10 +8,33 @@
     android:layout_height="wrap_content" android:padding="16dp" android:textIsSelectable="true"
     tools:context=".TaskDetailFragment" />
 
-    <Chronometer
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chronometer"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Press Start"
+        android:id="@+id/textViewTimer"
         android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:id="@+id/buttonStartTimer"
+            android:layout_gravity="right"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/buttonUpdateTimer"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
 </LinearLayout>
