@@ -1,11 +1,13 @@
 package com.example.zach.taskswithpomodoro;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +33,7 @@ import java.util.TimerTask;
  */
 public class TaskDetailFragment extends Fragment {
     TextView textViewTimer;
+    NotificationManager nm;
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -87,7 +90,15 @@ public class TaskDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.task_detail)).setText(mItem.details);
         }
+        Button buttonUpdateTimer = (Button) rootView.findViewById(R.id.buttonUpdateTimer);
+        buttonUpdateTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNotification();
+            }
+        });
 
+        //nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         return rootView;
     }
@@ -124,33 +135,34 @@ public class TaskDetailFragment extends Fragment {
     }
 
     private void showNotification(){
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.notification_icon)
-                        .setContentTitle("My notification")
-                        .setContentText("Hello World!");
-// Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, ResultActivity.class);
 
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(ResultActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-        mNotificationManager.notify(mId, mBuilder.build());
+        //Notification notification = new Notification(R.drawable.clock, "potato", System.currentTimeMillis());
+        Intent MyIntent = new Intent(getContext(), TaskListActivity.class);
+        PendingIntent StartIntent = PendingIntent.getActivity(getActivity(), (int) System.currentTimeMillis(), MyIntent,0);
+        Notification mNotification = new Notification.Builder(getContext()).setContentText("potato").setContentText("nuggets").setSmallIcon(R.drawable.clock).setContentIntent(StartIntent).build();
+
+
+        //We get a reference to the NotificationManager
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
+
+
+
+
+
+
+
+
+
+        //A PendingIntent will be fired when the notification is clicked. The FLAG_CANCEL_CURRENT flag cancels the pendingintent
+
+        //mNotification.setLatestEventInfo(getContext(), MyNotificationTitle, MyNotificationText, StartIntent);
+
+        int NOTIFICATION_ID = 0;
+        notificationManager.notify(NOTIFICATION_ID , mNotification);
+
+
+
+
     }
 
 
