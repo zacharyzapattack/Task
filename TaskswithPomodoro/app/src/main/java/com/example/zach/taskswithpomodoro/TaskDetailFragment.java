@@ -33,7 +33,7 @@ import java.util.TimerTask;
  */
 public class TaskDetailFragment extends Fragment {
     TextView textViewTimer;
-    NotificationManager nm;
+    NotificationManager notificationManager;
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -45,6 +45,8 @@ public class TaskDetailFragment extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private TaskContent.Task mItem;
+
+    private String currentItemId;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -63,12 +65,15 @@ public class TaskDetailFragment extends Fragment {
             // to load content from a content provider.
             mItem = TaskContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
+            currentItemId = getArguments().getString(ARG_ITEM_ID);
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 appBarLayout.setTitle(mItem.title);
             }
         }
+        notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
 
 
     }
@@ -137,13 +142,14 @@ public class TaskDetailFragment extends Fragment {
     private void showNotification(){
 
         //Notification notification = new Notification(R.drawable.clock, "potato", System.currentTimeMillis());
-        Intent MyIntent = new Intent(getContext(), TaskListActivity.class);
+        Intent MyIntent = new Intent(getContext(), TaskDetailActivity.class);
+        MyIntent.putExtra(ARG_ITEM_ID,currentItemId);
         PendingIntent StartIntent = PendingIntent.getActivity(getActivity(), (int) System.currentTimeMillis(), MyIntent,0);
         Notification mNotification = new Notification.Builder(getContext()).setContentText("potato").setContentText("nuggets").setSmallIcon(R.drawable.clock).setContentIntent(StartIntent).build();
 
 
         //We get a reference to the NotificationManager
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
+
 
 
 
